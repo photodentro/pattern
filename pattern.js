@@ -57,6 +57,19 @@ function init() {
   // The last queueFileLoad calls queueComplete. Execution continues there.
 }
 
+function queueFileLoad(event) {
+  resourcesLoaded++;
+  statusText.text = "Φόρτωση " + parseInt(100*resourcesLoaded/resourceNames.length) + " %";
+  stage.update();
+  if (resourcesLoaded == resourceNames.length)
+    queueComplete(event);
+}
+
+// Return an integer from 0 to num-1.
+function random(num) {
+  return Math.floor(Math.random() * num);
+}
+
 function imgByName(name) {
   return resources[resourceNames.indexOf(name)];
 }
@@ -74,14 +87,6 @@ function ColorFilter(i) {
   var rgby = [4, 2, 3, 6];
   i = rgby[i % 4];
   return new createjs.ColorFilter(CC(i&4), CC(i&2), CC(i&1), 1, 0, 0, 0, 0)
-}
-
-function queueFileLoad(event) {
-  resourcesLoaded++;
-  statusText.text = "Φόρτωση " + parseInt(100*resourcesLoaded/resourceNames.length) + " %";
-  stage.update();
-  if (resourcesLoaded == resourceNames.length)
-    queueComplete(event);
 }
 
 function queueComplete(event) {
@@ -176,7 +181,6 @@ function queueComplete(event) {
 function onR1click(event) {
   if (event.target.image.rname != "question_mark")
     return;
-  console.log(event.target, r3.combination);
   for (i = 0; i < r3.combination.length; i++)
     if (event.target.solution[i] != r3.combination[i])
       return;
@@ -265,7 +269,7 @@ function onMenuHome(event) {
 }
 
 function onMenuHelp(event) {
-  alert("Από το αριστερό κουτί, επιλέξτε έκφραση, χρώμα και σχήμα, ώστε να ταιριάζει με αυτό που φαντάζεστε ότι πρέπει να μπει στη θέση του ερωτηματικού στο πάνω κουτί. Μετά πατήστε το ερωτηματικό.");
+  alert("Από το αριστερό κουτί, επιλέξτε σχήμα, χρώμα και έκφραση, ώστε να ταιριάζει με αυτό που φαντάζεστε ότι πρέπει να μπει στη θέση του ερωτηματικού στο πάνω κουτί. Μετά πατήστε το ερωτηματικό.");
 }
 
 function onMenuAbout(event) {
@@ -423,27 +427,82 @@ function tick() {
   stage.update();
 }
 
+// Return a shuffled array [0, ..., num-1].
+// If different_index==true, make sure that array[i] != i.
+function shuffled_array(num, different_index) {
+    var result = [];
+    var i, j, temp;
+
+    // Fill the array with [0, ..., num-1]
+    for (i = 0; i < num; i++)
+        result.push(i);
+    // shuffle the array
+    for (i = 0; i < num; i++) {
+        j = random(num);
+        temp = result[i];
+        result[i] = result[j];
+        result[j] = temp;
+    }
+    // Make sure that result[i] != i
+    if (different_index)
+        for (i = 0; i < num; i++)
+            if (result[i] == i) {
+                j = (i + 1) % num;
+                temp = result[i];
+                result[i] = result[j];
+                result[j] = temp;
+            }
+    return result;
+}
+
 function initLevel(newLevel) {
   // Internal level number is zero-based; but we display it as 1-based.
   // We allow/fix newLevel if it's outside its proper range.
-  var numLevels = 11;
+  var numLevels = 7;
   level = (newLevel + numLevels) % numLevels;
+
+  // lvl = 0..1: all characteristics = random[2..4]
+  // lvl = 2..3: two characteristics = random[2..4], one fixed
+  // lvl = 4..5: one characteristic  = random[2..4], two fixed
+  // lvl = 6..7: all characteristics = different randoms[2..4]
+  lvl = {};
+
+  r = 2 + random(3);
+  chrs = [r, r, r];
+  if (level < 2) {
+    chrs = [r, r, r];
+  } else if (level < 4) {
+    chrs = [r, r, r];
+    chrs[random(3)] = 1
+  } else if (level < 6) {
+    chrs = [1, 1, 1];
+    chrs[random(3)] = r;
+  } else {
+    chrs = [2 + random(3), 2 + random(3), 2 + random(3)];
+  }
+  [lvl.snum, lvl.cnum, lvl.fnum] = chrs;
+  lvl.shapes = shuffled_array(4).slice(0, lvl.snum);
+  lvl.colors = shuffled_array(4).slice(0, lvl.cnum);
+  lvl.faces = shuffled_array(4).slice(0, lvl.fnum);
 
   // Region1
   r1.tilesNum = 12;
   r1.gx = 12;
   r1.gy = 1;
-  for (i = 0; i < r1.tiles.length; i++)
+  for (i = 0; i < r1.tiles.length; i++) {
+    r1.tiles[i].solution = [lvl.shapes[i % lvl.snum],
+      lvl.colors[i % lvl.cnum], lvl.faces[i % lvl.fnum]];
     if (i < 11) {
-      r1.tiles[i].image = resources[resourceNames.indexOf("shape_circle") + i % 4]
-      r1.tiles[i].filters = [ ColorFilter(i) ];
-    } else if (i == 11) {
-      r1.tiles[i].image = imgByName("question_mark");
-      r1.tiles[i].solution = [3, 3, 3];
+      r1.tiles[i].image = resources[resourceNames.indexOf("shape_circle") + r1.tiles[i].solution[0]]
+      r1.tiles[i].filters = [ ColorFilter(r1.tiles[i].solution[1]) ];
     } else {
-      r1.tiles[i].image = resources[resourceNames.indexOf("face_angry") + i % 4]
+      r1.tiles[i].image = resources[resourceNames.indexOf("face_angry") + r1.tiles[i].solution[2]]
       // r1.tiles[i].filters = [ ColorFilter(i) ];
     }
+  }
+  r1.tiles[11].image = imgByName("question_mark");
+  r1.tiles[11].filters = [];
+
   r1.tiles[23].visible = false;
   // Region2
   r2.tilesNum = 12;
@@ -462,7 +521,7 @@ function initLevel(newLevel) {
   r4.gx = 5;
   r4.gy = 1;
   endGame = false;
-  imgSuccess.image = resources[resourceNames.indexOf("flower_good") + Math.floor(Math.random() * 2)];
+  imgSuccess.image = resources[resourceNames.indexOf("flower_good") + random(2)];
   imgSuccess.visible = false;
   if (r1.selectedTile) {
     r1.selectedTile.rotation = 0;
