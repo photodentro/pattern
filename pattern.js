@@ -174,9 +174,22 @@ function queueComplete(event) {
 }
 
 function onR1click(event) {
-  if (event.target.image.rname == "question_mark") {
-    r1.selectedTile = event.target;
-  }
+  if (event.target.image.rname != "question_mark")
+    return;
+  console.log(event.target, r3.combination);
+  for (i = 0; i < r3.combination.length; i++)
+    if (event.target.solution[i] != r3.combination[i])
+      return;
+  onR1mouseout(event);  // Unhover it
+  event.target.image = r3.tiles[0].image;
+  event.target.filters = r3.tiles[0].filters;
+  event.target.updateCache();
+  // TODO: link face images in shapeimage.somevar
+  r1.tiles[event.target.i+12].image = r3.tiles[1].image;
+  r1.tiles[event.target.i+12].visible = true;
+  r1.tiles[event.target.i+12].updateCache();
+  stage.update();
+  checkEndGame();
 }
 
 function onR1mouseover(event) {
@@ -196,16 +209,19 @@ function onR1mouseout(event) {
 }
 
 function onR2click(event) {
-  if (event.target.i < 4) {
+  if (event.target.i < 4) {  // Shape
+    r3.combination[0] = event.target.i % 4;
     r3.tiles[0].image = event.target.image;
     r3.tiles[0].updateCache();
-  } else if (event.target.i < 8) {
+  } else if (event.target.i < 8) {  // Color
+    r3.combination[1] = event.target.i % 4;
     r3.tiles[0].filters = event.target.filters;
     r3.tiles[0].updateCache();
     // Nah, faces look better in gray
     // r3.tiles[1].filters = event.target.filters;
     // r3.tiles[1].updateCache();
-  } else if (event.target.i < 12) {
+  } else if (event.target.i < 12) {  // Face
+    r3.combination[2] = event.target.i % 4;
     r3.tiles[1].image = r2.tiles[event.target.i + 4].image;
     r3.tiles[1].updateCache();
   }
@@ -421,9 +437,10 @@ function initLevel(newLevel) {
     if (i < 11) {
       r1.tiles[i].image = resources[resourceNames.indexOf("shape_circle") + i % 4]
       r1.tiles[i].filters = [ ColorFilter(i) ];
-    } else if (i == 11)
+    } else if (i == 11) {
       r1.tiles[i].image = imgByName("question_mark");
-    else {
+      r1.tiles[i].solution = [3, 3, 3];
+    } else {
       r1.tiles[i].image = resources[resourceNames.indexOf("face_angry") + i % 4]
       // r1.tiles[i].filters = [ ColorFilter(i) ];
     }
@@ -439,6 +456,7 @@ function initLevel(newLevel) {
   r3.tiles[0].image = imgByName("blank");
   r3.tiles[0].filters = [ ];
   r3.tiles[1].image = imgByName("blank");
+  r3.combination = [-1, -1, -1];
   // Region4
   r4.tilesNum = 5;
   r4.gx = 5;
@@ -456,7 +474,7 @@ function initLevel(newLevel) {
 function checkEndGame() {
   endGame = true;
   for (i = 0; i < 12; i++) {
-    if (r2.tiles[i].image.src != r1.tiles[i].image.src)
+    if (r1.tiles[i].image.rname == "question_mark")
       endGame = false;
   }
   if (endGame) {
