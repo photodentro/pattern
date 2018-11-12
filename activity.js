@@ -29,7 +29,7 @@ const ratio = 16/9;
 // https://bugzilla.mozilla.org/show_bug.cgi?id=874811
 // Additionally, preloadjs currently doesn't work with .svg images.
 // Put the tiles first so that we can get them by index more easily
-var resourceNames = ['question_mark', 'face_angry', 'face_glasses', 'face_happy', 'face_tonque', 'shape_circle', 'shape_hexagon', 'shape_rhombus', 'shape_square', 'bar_home', 'bar_help', 'bar_about', 'bar_previous', 'bar_next', 'background', 'flower_good', 'lion_good', 'blank'];
+var resourceNames = ['question_mark', 'face_angry', 'face_glasses', 'face_happy', 'face_tonque', 'shape_circle', 'shape_hexagon', 'shape_rhombus', 'shape_square', 'bar_home', 'bar_help', 'bar_about', 'bar_previous', 'bar_next', 'background', 'flower_good', 'lion_good', 'try_again', 'blank'];
 var resources = [];
 var resourcesLoaded = 0;
 var level;
@@ -182,8 +182,17 @@ function onR1click(event) {
   if (event.target.image.rname != "question_mark")
     return;
   for (i = 0; i < r3.combination.length; i++)
-    if (event.target.solution[i] != r3.combination[i])
+    if (event.target.solution[i] != r3.combination[i]) {
+      // Try again!
+      r3.tiles[0].image = imgByName("try_again");
+      r3.tiles[0].filters = [ ];
+      r3.tiles[0].updateCache();
+      r3.tiles[1].image = imgByName("blank");
+      r3.tiles[1].updateCache();
+      r3.combination = [-1, -1, -1];
+      stage.update();
       return;
+    }
   onR1mouseout(event);  // Unhover it
   event.target.image = r3.tiles[0].image;
   event.target.filters = r3.tiles[0].filters;
@@ -213,6 +222,10 @@ function onR1mouseout(event) {
 }
 
 function onR2click(event) {
+  if (r3.tiles[0].image == imgByName("try_again")) {  // Remove try_again
+    r3.tiles[0].image = imgByName("blank");
+    r3.tiles[0].updateCache();
+  }
   if (event.target.i < 4) {  // Shape
     r3.combination[0] = event.target.i % 4;
     r3.tiles[0].image = event.target.image;
@@ -408,7 +421,7 @@ function resize() {
   bg.scaleX = stage.canvas.width / bg.image.width;
   bg.scaleY = stage.canvas.height / bg.image.height;
   bg.cache(0, 0, bg.image.width, bg.image.height);
-  
+
   stage.update();
 }
 
@@ -480,7 +493,9 @@ function initLevel(newLevel) {
   } else {
     chrs = [2 + random(3), 2 + random(3), 2 + random(3)];
   }
-  [lvl.snum, lvl.cnum, lvl.fnum] = chrs;
+  lvl.snum = chrs[0];
+  lvl.cnum = chrs[1];
+  lvl.fnum = chrs[2];
   lvl.shapes = shuffled_array(4).slice(0, lvl.snum);
   lvl.colors = shuffled_array(4).slice(0, lvl.cnum);
   lvl.faces = shuffled_array(4).slice(0, lvl.fnum);
