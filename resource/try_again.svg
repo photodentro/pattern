@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="75mm" height="75mm" enable-background="new" version="1.1" viewBox="0 0 75 75" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="75mm" height="75mm" enable-background="new" version="1.1" viewBox="0 0 75 75" xmlns="http://www.w3.org/2000/svg">
  <title>smiley1</title>
  <defs>
-  <clipPath>
-   <path d="m355.68 259.18c-28.608-15.678-48.008-46.073-48.008-80.999 0-21.732 7.511-41.711 20.078-57.481h144.44c12.568 15.77 20.079 35.749 20.079 57.481 0 34.926-19.4 65.321-48.009 80.999z"/>
-  </clipPath>
   <clipPath id="clipPath1988">
    <path d="m296.85 129.56c0.21-10.913 9.232-19.591 20.148-19.382 10.916 0.211 19.595 9.23 19.384 20.142-0.209 10.919-20.692 47.809-20.692 47.809s-19.05-37.65-18.84-48.569"/>
   </clipPath>
@@ -28,7 +25,6 @@
   <linearGradient id="linearGradient1136" x1="114.65" x2="50.915" y1="-.23236" y2="70.884" gradientTransform="translate(-43.627 -1.232)" gradientUnits="userSpaceOnUse">
    <stop stop-color="#ffffa6" offset="0"/>
    <stop stop-color="#ffffa6" offset=".1447"/>
-   <stop stop-color="#fff98a" offset=".1447"/>
    <stop stop-color="#fff98a" offset=".1447"/>
    <stop stop-color="#fff98a" offset=".18177"/>
    <stop stop-color="#eb9708" offset=".64588"/>
