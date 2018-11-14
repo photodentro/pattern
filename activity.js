@@ -21,7 +21,7 @@ var r1 = { tiles: Array(24), color: "DarkTurquoise" };
 var r2 = { tiles: Array(16), color: "OrangeRed" };
 var r3 = { tiles: Array(2), color: "DeepSkyBlue" };
 // the menu bar buttons
-var r4 = { tiles: Array(5) };
+var r4 = { tiles: Array(6) };
 var statusText, lvlText;
 var imgSuccess;
 const ratio = 16/9;
@@ -29,7 +29,7 @@ const ratio = 16/9;
 // https://bugzilla.mozilla.org/show_bug.cgi?id=874811
 // Additionally, preloadjs currently doesn't work with .svg images.
 // Put the tiles first so that we can get them by index more easily
-var resourceNames = ['question_mark', 'face_angry', 'face_glasses', 'face_happy', 'face_tonque', 'shape_circle', 'shape_hexagon', 'shape_rhombus', 'shape_square', 'bar_home', 'bar_help', 'bar_about', 'bar_previous', 'bar_next', 'background', 'flower_good', 'lion_good', 'try_again', 'blank'];
+var resourceNames = ['question_mark', 'face_angry', 'face_glasses', 'face_happy', 'face_tonque', 'shape_circle', 'shape_hexagon', 'shape_rhombus', 'shape_square', 'bar_home', 'bar_help', 'bar_about', 'bar_fullscreen', 'bar_previous', 'bar_next', 'background', 'flower_good', 'lion_good', 'try_again', 'blank'];
 var resources = [];
 var resourcesLoaded = 0;
 var level;
@@ -155,7 +155,7 @@ function queueComplete(event) {
     r3.cont.addChild(r3.tiles[i]);
   }
 
-  var onMenuClick = [onMenuHome, onMenuHelp, onMenuAbout, onMenuPrevious, onMenuNext];
+  var onMenuClick = [onMenuHome, onMenuHelp, onMenuAbout, onMenuFullscreen, onMenuPrevious, onMenuNext];
   r4.cont = new createjs.Container();
   stage.addChild(r4.cont);
   for (i = 0; i < r4.tiles.length; i++) {
@@ -299,6 +299,23 @@ function onMenuAbout(event) {
   window.open("credits/index_DS_II.html");
 }
 
+function onMenuFullscreen(event) {
+  var doc = window.document;
+  var docEl = doc.documentElement;
+
+  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen
+    || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen
+    || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if (!doc.fullscreenElement && !doc.mozFullScreenElement
+    && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  } else {
+    cancelFullScreen.call(doc);
+  }
+}
+
 function onMenuPrevious(event) {
   initLevel(level - 1);
 }
@@ -397,7 +414,7 @@ function resize() {
 
   // Region4
   r4.ts = stage.canvas.height / 10;
-  r4.ma = r4.ts / 5;
+  r4.ma = r4.ts / 4;
   r4.x = 0;
   r4.y = stage.canvas.height - r4.ts - 2*r4.ma;
   alignRegion(r4);
@@ -405,7 +422,7 @@ function resize() {
   r4.tiles[r4.tiles.length-1].x += r4.ts + r4.ma;
 
   lvlText.text = level + 1;
-  lvlText.x = parseInt(4.5*(r4.ma+r4.ts) + r4.ma/2);
+  lvlText.x = parseInt(5.5*(r4.ma+r4.ts) + r4.ma/2);
   lvlText.y = stage.canvas.height - r4.ma/2 - r4.ts/2;
   lvlText.font = parseInt(2*r4.ts/2) + "px Arial";
 
@@ -542,8 +559,8 @@ function initLevel(newLevel) {
   r3.tiles[1].image = imgByName("blank");
   r3.combination = [-1, -1, -1];
   // Region4
-  r4.tilesNum = 5;
-  r4.gx = 5;
+  r4.tilesNum = 6;
+  r4.gx = 6;
   r4.gy = 1;
   endGame = false;
   imgSuccess.image = resources[resourceNames.indexOf("flower_good") + random(2)];
