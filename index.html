@@ -5,36 +5,171 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 -->
 <html lang="el">
 <head>
-  <meta charset="UTF-8" />
-  <!-- Using this metatag users can't scale the page using pinchIn/out gestures on mobile devices -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Αναγνώριση και αναπαραγωγή μοτίβου</title>
-  <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
-  <script src="activity.js"></script>
-  <style type="text/css">
-    /* Remove margins and HTML scrollbars */
-    body, html  {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: black;
-    }
-    #mainCanvas {
-      padding: 0;
-      margin: auto;
-      display: block;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
+  <meta charset="UTF-8">
+  <title>Αναπαραγωγή προτύπου</title>
+  <style>
+    /* Dummy style for animations */
   </style>
+  <link rel="stylesheet" type="text/css" href="activity.css">
+  <script src="activity.js"></script>
 </head>
-
 <body>
-  <canvas id="mainCanvas" width="320" height="180">
-    Your browser doesn't support HTML5!
-  </canvas>
+<!--
+Internet Explorer doesn't support reading nor writing svg.innerHTML:
+https://stackoverflow.com/questions/28129956/get-innerhtml-of-svg-tag-result-in-undefined-in-ie
+If we ever want to support IE, we can put the svg images inside divs,
+and handle div.innerHTML instead. It's also possible to do that from
+initActivity(), by first sed'ing pattern.innerHTML to include divs etc.
+-->
+<div id="main">
+  <div id="pattern">
+    <svg id="p0" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#redgrad)" />
+    </svg>
+    <svg id="p1" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#greengrad)" />
+    </svg>
+    <svg id="p2" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#bluegrad)" />
+    </svg>
+    <svg id="p3" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#yellowgrad)" />
+    </svg>
+    <svg id="p4" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#redgrad)" />
+    </svg>
+    <svg id="p5" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#greengrad)" />
+    </svg>
+    <svg id="p6" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#bluegrad)" />
+    </svg>
+    <svg id="p7" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#yellowgrad)" />
+    </svg>
+    <svg id="p8" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#redgrad)" />
+    </svg>
+    <svg id="p9" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#greengrad)" />
+    </svg>
+    <svg id="p10" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#bluegrad)" />
+    </svg>
+    <svg id="p11" viewBox="0 0 75 75">
+        <path d="m15.42 17.21c5.7317-3.546 11.463-7.092 17.195-10.638 6.2527 0.65663 12.505 1.3133 18.758 1.9699 2.7356 3.8083 5.4712 7.6167 8.2068 11.425-1.0421 5.647-2.0843 11.294-3.1264 16.941-4.0383 2.7579-8.0767 5.5157-12.115 8.2736-1.0421 2.4952-2.0843 4.9905-3.1264 7.4857 0.91187 2.4952 1.8237 4.9905 2.7356 7.4857-2.7356 2.7579-5.4712 5.5157-8.2068 8.2736-4.1687-0.65663-8.3373-1.3133-12.506-1.9699 0.337-3.515-0.91507-7.3714 1.1728-10.543 0.82971-3.1587-2.1981-5.9762-1.2879-9.1795 1.1456-5.4921 2.1509-11.018 3.2415-16.523-2.6053 1.1819-5.2107 2.3639-7.816 3.5458l-3.1252-16.546z" fill="#86a9de" fill-rule="evenodd"/>
+        <path d="m62.991 23.44c-0.65348 8.1327-3.7192 16.751-10.662 21.58-3.2854 1.3078-7.69 2.8746-7.0534 7.2434 0.328 3.2299 2.2796 6.3503 0.90957 9.6491-1.0052 4.2508-4.3876 7.8349-8.7074 8.7461-4.8778 1.7039-11.227 1.7978-14.919-2.3599-3.0138-3.2777-0.3516-7.3245 0.1714-10.676-2.1461-2.2958-1.7501-5.2248-1.3958-8.1061 0.40227-4.6135 1.9206-9.0442 2.6062-13.594-1.8321-2.1287-4.1434 3.1866-6.5457 1.846-1.7172-2.6964-1.3706-6.2765-2.4701-9.2968-0.81256-3.5038-1.7143-6.9936-2.9162-10.387 4.5749-7.2825 12.923-10.81 20.758-13.417 8.0684-2.3665 17.656-2.153 24.48 3.2794 4.2591 3.8906 5.6114 9.9449 5.7447 15.493m-6.2779 2.782c0.80668-6.8415-4.973-13.077-11.556-14.058-7.497-1.7002-15.847-0.54267-22.221 3.8772-2.3841 1.7309-4.1925 4.3649-3.1814 7.4029 0.29406 2.8955 0.54106 8.9382 4.7018 5.9401 3.4116-1.7426 7.2021-4.5364 11.214-2.9888 3.1496 0.82224 5.3962 4.9893 3.0794 7.7162-2.7076 2.5307-6.603 0.67867-9.683 1.3888-2.4272 2.9898-1.5489 7.3963-2.4288 10.989-0.65098 2.9022 0.07646 7.3891 4.0421 5.7014 3.0452-1.8937 7.938 0.57471 9.7415-3.1105 0.15248-2.8131 0.4835-6.1875 4.3119-5.7045 3.4961-0.5315 6.2629-3.278 8.4565-5.8886 2.5032-3.1877 3.7163-7.2297 3.5229-11.265m-14.763 32.202c-0.61247-4.2012-5.9612-4.1048-8.8899-2.483-2.8871 1.0457-6.2038 2.8608-6.9256 6.0675 0.53783 4.1877 5.9028 3.4919 8.9941 3.2787 3.4957-0.39101 6.3752-3.4109 6.8215-6.8633" fill="#375480"/>
+    </svg>
+  </div>
+  <div id="characteristics">
+    <svg id="c0" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="#fff" stroke="#888" stroke-width="2" />
+    </svg>
+    <svg id="c1" viewBox="0 0 75 75">
+      <path d="m53.659 67.793c-2.7391 1.7869-29.032 2.0591-31.801 0.3293-2.7689-1.7299-16.128-26.775-16.158-30.292-0.029903-3.5169 12.903-28.834 15.642-30.621 2.7391-1.7871 29.032-2.059 31.801-0.3293 2.7689 1.7299 16.128 26.775 16.158 30.292 0.0299 3.5169-12.903 28.834-15.642 30.621z" fill="#fff" stroke="#888" stroke-width="2" />
+    </svg>
+    <svg id="c2" viewBox="0 0 75 75">
+       <rect transform="rotate(45)" x="25.629" y="-27.404" width="54.808" height="54.808" rx="5" ry="5" fill="#fff" stroke="#888" stroke-width="2" />
+    </svg>
+    <svg id="c3" viewBox="0 0 75 75">
+       <rect x="7.5" y="7.5" width="60" height="60" rx="5" ry="5" fill="#fff" stroke="#888" stroke-width="2" />
+    </svg>
+    <svg id="c4" viewBox="0 0 75 75">
+      <defs>
+        <radialGradient id="redgrad" cx="50%" cy="50%" r="70%" fx="70%" fy="30%">
+          <stop offset="0%" style="stop-color:rgb(255,224,224); stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgb(255,32,32);stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#redgrad)" />
+    </svg>
+    <svg id="c5" viewBox="0 0 75 75">
+      <defs>
+        <radialGradient id="greengrad" cx="50%" cy="50%" r="70%" fx="70%" fy="30%">
+          <stop offset="0%" style="stop-color:rgb(224,255,224); stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgb(0,255,0);stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#greengrad)" />
+    </svg>
+    <svg id="c6" viewBox="0 0 75 75">
+      <defs>
+        <radialGradient id="bluegrad" cx="50%" cy="50%" r="70%" fx="70%" fy="30%">
+          <stop offset="0%" style="stop-color:rgb(224,224,255); stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgb(0,192,255);stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#bluegrad)" />
+    </svg>
+    <svg id="c7" viewBox="0 0 75 75">
+      <defs>
+        <radialGradient id="yellowgrad" cx="50%" cy="50%" r="70%" fx="70%" fy="30%">
+          <stop offset="0%" style="stop-color:rgb(255,255,224); stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <circle cx="37.5" cy="37.5" r="31" fill="url(#yellowgrad)" />
+    </svg>
+    <svg id="c8" viewBox="0 0 75 75">
+      <path d="m31.581 32.807c0 1.4312-1.2393 2.6022-2.8918 2.6022-1.5147 0-2.7541-1.171-2.7541-2.6022 0-1.5614 1.2393-2.7323 2.7541-2.7323 1.6524 0 2.8918 1.171 2.8918 2.7323z" fill="#666" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7401px"/>
+      <path d="m49.068 32.807c0 1.4312-1.377 2.6022-2.8918 2.6022-1.5147 0-2.7541-1.171-2.7541-2.6022 0-1.5614 1.2393-2.7323 2.7541-2.7323 1.5147 0 2.8918 1.171 2.8918 2.7323z" fill="#666" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7401px"/>
+      <g fill="none" stroke="#666" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m50.72 53.139c-3.7179-2.602-8.262-4.1634-13.219-4.1634-4.9571 0-9.5013 1.5613-13.22 4.1634" stroke-width="3.614px"/>
+        <path d="m26.623 21.368 7.7114 6.2453" stroke-width="2.6771px"/>
+        <path d="m48.379 21.368-7.849 6.2453" stroke-width="2.6771px"/>
+      </g>
+    </svg>
+    <svg id="c9" viewBox="0 0 75 75">
+      <g stroke="#666">
+        <path d="m54.374 25.648c0.55101-8.2644-5.9233-12.26-11.984-10.882" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.204"/>
+        <path d="m18.973 25.234c0.55101-2.8926 3.306-4.8211 7.4385-4.5456" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.204px"/>
+        <path d="m53.961 45.478c-10.056-0.13769-12.81 1.2397-16.806 2.6171-3.857 1.102-8.6782 2.204-21.214 1.2397 4.408 7.5763 12.673 12.26 21.489 12.26 10.331 0 19.56-6.3366 23.279-15.841-2.4795-0.13769-4.8213-0.27538-6.7498-0.27538z" fill="#fff" stroke-width="1.702"/>
+      </g>
+      <path d="m6.8511 31.985h61.298" fill="none" stroke="#808080" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.204px"/>
+      <g stroke-width=".76622">
+        <path d="m42.803 27.571h13.362c1.653 0 3.0305 1.3775 3.0305 3.0305v5.6478c0 4.959-5.0967 6.7498-6.7498 6.7498h-5.9233c-1.653 0-6.6119-2.204-6.6119-6.7498v-5.6478c0-1.653 1.2397-3.0305 2.8926-3.0305z" fill="#404040"/>
+        <path d="m18.835 27.571h13.361c1.653 0 2.8928 1.3775 2.8928 3.0305v5.6478c0 4.959-4.959 6.7498-6.612 6.7498h-5.9232c-1.653 0-6.7497-2.204-6.7497-6.7498v-5.6478c0-1.653 1.3775-3.0305 3.0305-3.0305z" fill="#404040"/>
+        <path d="m45.145 30.192c-1.3775 0-2.4795 0.96429-2.4795 2.3418v0.55075c0.55101 0.13768 1.2397 0.13768 1.7907 0.13768 2.8928 0 5.51-1.2397 6.612-3.0305h-5.9233z" fill="#fff"/>
+        <path d="m21.176 30.192c-1.3775 0-2.6173 0.96429-2.6173 2.3418v0.55075c0.68873 0.13768 1.2397 0.13768 1.9285 0.13768 2.8927 0 5.3722-1.2397 6.4742-3.0305h-5.7855z" fill="#fff"/>
+      </g>
+    </svg>
+    <svg id="c10" viewBox="0 0 75 75">
+      <g stroke="#666" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="29.141" cy="23.927" r="2.7165" color="#000" fill="#666" stroke-width="1.7581" />
+        <circle cx="45.86" cy="23.927" r="2.7165" color="#000" fill="#666" stroke-width="1.7581" />
+        <path d="m14.818 34.633h1.7583c1.4003 10.318 10.223 18.277 20.925 18.277 10.702 0 19.52-7.9596 20.921-18.277h1.7583" color="#000" fill="none" stroke-width="3.5166" />
+      </g>
+    </svg>
+    <svg id="c11" viewBox="0 0 75 75">
+      <path d="m19.171 41.269c0.43384 1.8147 1.739 3.1066 3.8409 3.9204l28.978-0.0017c2.3027-0.833 3.3759-2.0268 3.8399-3.9187" color="#000" fill="none" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.3307" />
+      <path d="m30.42 54.467c0.10729 2.7663 3.4169 5.9343 6.9285 5.6559 3.6239-0.21822 6.8322-2.524 7.0698-5.0903v-9.7565l-14.423-0.2828z" fill="#ea495f" stroke-width="1.7442" />
+      <path d="m32.682 49.665h9.7574c0.28966 4.2712-1.4847 5.9641-4.8081 5.9332-3.3234-0.03094-5.1046-1.898-4.9493-5.9332z" fill="#f26a7a" stroke-width="1.7442"/>
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m37.501 51.779-9.4e-4 -5.751" color="#000" stroke="#9a2400" stroke-width="3.7643" />
+        <path d="m44.515 52.88c0 3.8733-3.1408 7.0134-7.0141 7.0134-3.8733-2.5e-5 -7.0138-3.1401-7.0138-7.0134v-7.9084h14.028z" color="#000" stroke="#9a2400" stroke-width="2.8233" />
+        <path d="m21.553 28.668c0.54607-2.5015 2.534-5.1292 4.3349-6.1042 1.8005-0.97499 4.7939-1.3668 5.5734 0.44233" color="#000" stroke="#666" stroke-width="2.8312" />
+        <path d="m53.449 28.668c-0.54607-2.5015-2.534-5.1292-4.3349-6.1042-1.8005-0.97499-4.7939-1.3668-5.5734 0.44233" color="#000" stroke="#666" stroke-width="2.8312" />
+      </g>
+    </svg>
+  </div>
+  <div id="solution">
+    <svg id="s0" viewBox="0 0 75 75">
+      <circle cx="37.5" cy="37.5" r="31" fill="#fff" stroke="#888" stroke-width="2" />
+    </svg>
+    <svg id="s1" viewBox="0 0 75 75">
+      <path d="m44.571 37.5 21.213 21.213-7.0711 7.0711-21.213-21.213-21.213 21.213-7.0711-7.0711 21.213-21.213-21.213-21.213 7.0711-7.0711 21.213 21.213 21.213-21.213 7.0711 7.0711z" fill="#f00" stroke="#fee" stroke-linejoin="round" stroke-width="3" />
+    </svg>
+  </div>
+  <div id="menubar">
+    <img id="bar_home" src="resource/bar_home.svg" alt="Αρχική" title="Επιστροφή στην αρχική σελίδα">
+    <img id="bar_help" src="resource/bar_help.svg" alt="Βοήθεια" title="Βοήθεια">
+    <img id="bar_about" src="resource/bar_about.svg" alt="Περί" title="Περί">
+    <img id="bar_fullscreen" src="resource/bar_fullscreen.svg" alt="Πλήρης οθόνη" title="Πλήρης οθόνη">
+    <img id="bar_previous" src="resource/bar_previous.svg" alt="Προηγούμενο" title="Προηγούμενο επίπεδο">
+    <p id="level">1</p>
+    <img id="bar_next" src="resource/bar_next.svg" alt="Επόμενο" title="Επόμενο επίπεδο">
+  </div>
+</div>
+<div id="help"><div class="dialog">Από το αριστερό κουτί, επιλέξτε σχήμα, χρώμα και έκφραση, ώστε να ταιριάζει με αυτό που φαντάζεστε ότι πρέπει να μπει στη θέση του ερωτηματικού στο πάνω κουτί. Μετά πατήστε το ερωτηματικό.</div></div>
 </body>
 </html>

@@ -1,14 +1,10 @@
-Copyright: 2018 Georgios Piskopanis
+Copyright: 2018 Artemis Georgopoulou, Georgios Piskopanis
 License: CC BY-NC-SA 4.0
 Files:
 background.svg
 bar_about.svg
+bar_fullscreen.svg
 bar_help.svg
 bar_home.svg
 bar_next.svg
 bar_previous.svg
-
-Copyright: 2017 https://www.freepik.com/free-vector/pack-of-cute-smileys_1000981.htm
-License: license-freepik.txt
-Files:
-try_again.svg
