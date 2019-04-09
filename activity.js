@@ -175,6 +175,12 @@ function combineSVG(target, combination) {
   ih = '';
   if (combination[0] >= 0) {
     ih = act.c[combination[0]].innerHTML;
+    if (!ih) {
+      msg = "This activity doesn't work in Internet Explorer.\nUse another browser.";
+      alert(msg);
+      window.onerror = "";
+      throw new Error(msg);
+    }
     if (combination[1] >= 0) {
       ih = ih.replace('"#fff"', sformat('url("{}")', grads[combination[1]]));
       ih = ih.replace('"#888"', strokes[combination[1]]);
