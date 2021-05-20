@@ -1,0 +1,19 @@
+{
+    "author": "Φωτόδεντρο (http://photodentro.edu.gr)",
+    "browser": "index.html",
+    "bugs": "http://photodentro.edu.gr/lor/feedback/form.jsp",
+    "description": "Αναγνώριση και αναπαραγωγή μοτίβου",
+    "descriptionLong": "Δραστηριότητα πρακτικής και εξάσκησης με στόχο την εξοικείωση των μαθητών με την αναγνώριση και την αναπαραγωγή μοτίβων. \nΤο μαθησιακό αντικείμενο δίνει τη δυνατότητα στους μαθητές να εξασκήσουν την παρατηρητικότητά τους, ώστε να αναγνωρίσουν και να συμπληρώσουν μοτίβα της μορφής ΑΒ, ΑΒΓ, ΑΒΓΔ.",
+    "homepage": "http://photodentro.edu.gr/lor/r/8521/10761",
+    "icon": "package.jpg",
+    "keywords": [
+        "μοτίβα",
+        "αναγνώριση μοτίβου",
+        "αναπαραγωγή μοτίβου",
+        "συμπλήρωση μοτίβου"
+    ],
+    "license": "CC-BY-SA-4.0",
+    "name": "8521-10761",
+    "repository": "http://photodentro.edu.gr/lor/retrieve/58346/pattern_v1.0_pidx0054967.zip",
+    "version": "1.0.0"
+}
